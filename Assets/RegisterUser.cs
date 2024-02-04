@@ -1,7 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Networking;
 
 public class RegisterUser : MonoBehaviour
 {
@@ -22,7 +20,7 @@ public class RegisterUser : MonoBehaviour
     private void Awake()
     {
         _sender = new FormSender(this);
-        IDParser.IDGott += OnIDGott;
+       // IDParser.IDGott += OnIDGott;
         ParsePhoneNumber();
     }
 
@@ -32,11 +30,9 @@ public class RegisterUser : MonoBehaviour
         phoneNumber = phoneNumber.Replace("(", "");
         phoneNumber = phoneNumber.Replace(")", "");
 
-        _formFields["Country"] = "+" + phoneNumber.Substring(0, 1); // Country code
-        _formFields["Operator"] = phoneNumber.Substring(1, 3); // Operator code
-        _formFields["Number"] = phoneNumber.Substring(4); // Number
-
-        Debug.Log(phoneNumber.Substring(4));
+        _formFields["Country"] = "+" + phoneNumber.Substring(0, 1);
+        _formFields["Operator"] = phoneNumber.Substring(1, 3);
+        _formFields["Number"] = phoneNumber.Substring(4);
     }
 
     private void OnIDGott(string id)
@@ -48,13 +44,7 @@ public class RegisterUser : MonoBehaviour
 
     private void PrintResponse(string response)
     {
-        if (response.Contains("RegOK"))
-        {
-            Debug.Log("Registration successful");
-        }
-        else
-        {
-            Debug.LogError("Registration failed. Response: " + response);
-        }
+        Debug.Log("Server Response: " + response);
     }
 }
+

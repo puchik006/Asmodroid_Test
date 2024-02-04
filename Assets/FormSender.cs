@@ -39,10 +39,6 @@ public class FormSender
             {
                 callback(www.downloadHandler.text);
             }
-
-            Debug.Log("Response Code: " + www.responseCode);
-            Debug.Log("Full Response: " + www.downloadHandler.text);
-            Debug.Log("Response Headers: " + www.result);
         }
     }
 }

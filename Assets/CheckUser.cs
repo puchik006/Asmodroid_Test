@@ -5,7 +5,7 @@ public class CheckUser : MonoBehaviour
 {
     private const string SERVER_ADDRESS = "http://45.86.183.61/Test/";
     private const string FILE_NAME = "CheckUser.php";
-    private const string PHONE_NUMBER = "+7(926)5251385";
+    private const string PHONE_NUMBER = "+972(53)4442115";
 
     private FormSender _sender;
 
@@ -13,7 +13,7 @@ public class CheckUser : MonoBehaviour
 
     private void Awake()
     {
-        //IDParser.IDGott += OnIDGott;
+        IDParser.IDGott += OnIDGott;
         _sender = new FormSender(this);
     }
 

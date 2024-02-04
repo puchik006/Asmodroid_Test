@@ -29,6 +29,8 @@ public class IDParser : MonoBehaviour
         string uniqueID = GetUniqueID(parsedIDs);
         string decryptedID = DecryptId(uniqueID);
         IDGott?.Invoke(decryptedID);
+
+        Debug.Log(decryptedID);
     }
 
     private List<string> ParseIDs(string jsonString)

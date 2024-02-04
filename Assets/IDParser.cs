@@ -12,21 +12,34 @@ public class IDParser : MonoBehaviour
 
     public static Action<string> IDGott;
 
-    private List<string> _unfilteredID = new();
-
     private JSONParser _jsonParser;
 
     public void GetId()
     {
         _jsonParser = new JSONParser();
-
         _jsonParser.GetJSONString(SERVER_ADDRESS, FILE_NAME, ParseID);
-
     }
 
     private void ParseID(string jsonString)
     {
-        throw new NotImplementedException();
+        KeysContainer keysContainer = JsonUtility.FromJson<KeysContainer>(jsonString);
+
+        HashSet<string> uniqueKeys = new();
+
+        foreach (KeyResponse keyResponse in keysContainer.Keys)
+        {
+            uniqueKeys.Add(keyResponse.Key);
+        }
+
+        // Convert HashSet to an array if needed
+        string[] uniqueKeysArray = new string[uniqueKeys.Count];
+        uniqueKeys.CopyTo(uniqueKeysArray);
+
+        // Log the unique keys
+        foreach (string key in uniqueKeysArray)
+        {
+            Debug.Log("Unique Key: " + key);
+        }
     }
 
     private string DeencryptId(string input)

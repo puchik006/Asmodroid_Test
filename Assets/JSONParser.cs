@@ -3,12 +3,18 @@ using UnityEngine;
 using UnityEngine.Networking;
 using System.Collections;
 
-public class JSONParser: MonoBehaviour
+public class JSONParser
 {
+    private MonoBehaviour _context;
+
+    public JSONParser(MonoBehaviour context)
+    {
+        _context = context;
+    }
 
     public void GetJSONString(string address, string filename, Action<string> callback)
     {
-        StartCoroutine(ParseResponse(address, filename, callback));
+        _context.StartCoroutine(ParseResponse(address, filename, callback));
     }
 
     private IEnumerator ParseResponse(string address, string fileName, Action<string> callback)

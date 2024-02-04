@@ -1,9 +1,8 @@
+using System.Collections.Generic;
+using System.Text;
 using System;
 using UnityEngine;
-using UnityEngine.Networking;
-using System.Collections.Generic;
-using System.Collections;
-using System.Text;
+using System.Linq;
 
 public class IDParser : MonoBehaviour
 {
@@ -14,48 +13,45 @@ public class IDParser : MonoBehaviour
 
     private JSONParser _jsonParser;
 
+    private void Awake()
+    {
+        _jsonParser = new JSONParser(this);
+    }
+
     public void GetId()
     {
-        _jsonParser = new JSONParser();
-        _jsonParser.GetJSONString(SERVER_ADDRESS, FILE_NAME, ParseID);
+        _jsonParser.GetJSONString(SERVER_ADDRESS, FILE_NAME, ProcessJSON);
     }
 
-    private void ParseID(string jsonString)
+    private void ProcessJSON(string jsonString)
+    {
+        List<string> parsedIDs = ParseIDs(jsonString);
+        string uniqueID = GetUniqueID(parsedIDs);
+        string decryptedID = DecryptId(uniqueID);
+        IDGott?.Invoke(decryptedID);
+    }
+
+    private List<string> ParseIDs(string jsonString)
     {
         KeysContainer keysContainer = JsonUtility.FromJson<KeysContainer>(jsonString);
-
-        HashSet<string> uniqueKeys = new();
-
-        foreach (KeyResponse keyResponse in keysContainer.Keys)
-        {
-            uniqueKeys.Add(keyResponse.Key);
-        }
-
-        // Convert HashSet to an array if needed
-        string[] uniqueKeysArray = new string[uniqueKeys.Count];
-        uniqueKeys.CopyTo(uniqueKeysArray);
-
-        // Log the unique keys
-        foreach (string key in uniqueKeysArray)
-        {
-            Debug.Log("Unique Key: " + key);
-        }
+        List<string> extractedKeys = keysContainer.Keys.Select(keyResponse => keyResponse.Key).ToList();
+        return extractedKeys;
     }
 
-    private string DeencryptId(string input)
+    private string GetUniqueID(List<string> idList)
     {
-        StringBuilder resultBuilder = new StringBuilder();
+        return idList.FirstOrDefault(key => key != "No Key");
+    }
 
-        for (int i = 1; i < input.Length; i += 2)
+    private string DecryptId(string input)
+    {
+        StringBuilder resultBuilder = new();
+
+        for (int i = 0; i < input.Length; i += 2) // ya by skazala eto ne kajdyi vtoroi, a cherez odin nachinaya s pervogo ili vse nechetnye
         {
             resultBuilder.Append(input[i]);
         }
 
         return resultBuilder.ToString();
     }
-}
-
-public class UserChecker: MonoBehaviour
-{
-
 }

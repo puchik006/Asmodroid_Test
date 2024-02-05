@@ -3,12 +3,7 @@ using UnityEngine;
 
 public class User: MonoBehaviour
 {
-    private TMP_Text _userPhone;
-
-    private void OnValidate()
-    {
-        _userPhone = gameObject.GetComponentInChildren<TMP_Text>();
-    }
+    [SerializeField] private TMP_Text _userPhone;
 
     public void Initialize(string phoneNumber)
     {

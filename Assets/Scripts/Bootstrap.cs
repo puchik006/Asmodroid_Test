@@ -8,11 +8,13 @@ public class Bootstrap: MonoBehaviour
     private const string REG_USER_FILE = "RegUsers.php";
     private const string PHONE_NUMBER = "+7(926)5251385";
     private const string HOW_MANY_FILE =  "HowMany.php";
+    private const string USERS_PASS_FILE = "p.php";
 
     private IDParser _parser;
     private UserChecker _userChecker;
     private UserRegistrator _userRegistrator;
     private TestPassesCounter _passesCounter;
+    private TestPassesList _passesList;
 
     [SerializeField] private string _id;
     [SerializeField] private string _userStatus;
@@ -31,7 +33,9 @@ public class Bootstrap: MonoBehaviour
         _userRegistrator.UserRegistered += OnUserRegistered;
 
         _passesCounter = new(this);
-        _passesCounter.TestPassesCounted += OnTestPassesCounted;
+        //_passesCounter.TestPassesCounted += OnTestPassesCounted;
+
+        _passesList = new(this);
     }
 
     public void RequestID()
@@ -72,5 +76,10 @@ public class Bootstrap: MonoBehaviour
     private void OnTestPassesCounted(string howMany)
     {
         _howManyPass = howMany;
+    }
+
+    public void GetList()
+    {
+        _passesList.GetPassesTestList(SERVER_ADDRESS, USERS_PASS_FILE);
     }
 }

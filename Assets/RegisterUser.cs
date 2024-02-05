@@ -20,24 +20,23 @@ public class RegisterUser : MonoBehaviour
     private void Awake()
     {
         _sender = new FormSender(this);
-       // IDParser.IDGott += OnIDGott;
+        //IDParser.IDGott += OnIDGott;
         ParsePhoneNumber();
     }
 
     private void ParsePhoneNumber()
     {
         string phoneNumber = PHONE_NUMBER.Replace("+", "");
-        phoneNumber = phoneNumber.Replace("(", "");
-        phoneNumber = phoneNumber.Replace(")", "");
+        string[] parts = phoneNumber.Split('(', ')');
 
-        _formFields["Country"] = "+" + phoneNumber.Substring(0, 1);
-        _formFields["Operator"] = phoneNumber.Substring(1, 3);
-        _formFields["Number"] = phoneNumber.Substring(4);
+        _formFields["Country"] = "+" + parts[0];
+        _formFields["Operator"] = "(" + parts[1] + ")";
+        _formFields["Number"] = parts[2];
     }
 
     private void OnIDGott(string id)
     {
-        _formFields["ID"] = id + "1";
+        _formFields["ID"] = id.Substring(0,id.Length - 1);
         string url = SERVER_ADDRESS + FILE_NAME;
         _sender.SendForm(url, _formFields, PrintResponse);
     }

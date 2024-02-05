@@ -1,39 +1,33 @@
 using System.Collections.Generic;
 using System.Text;
-using System;
 using UnityEngine;
 using System.Linq;
+using System;
 
-public class IDParser : MonoBehaviour
+public class IDParser
 {
-    private const string SERVER_ADDRESS = "http://45.86.183.61/Test/";
-    private const string FILE_NAME = "GetKey.php";
-
-    public static Action<string> IDGott;
-
     private JSONParser _jsonParser;
+    public Action<string> IDGott; 
 
-    private void Awake()
+    public IDParser(MonoBehaviour context)
     {
-        _jsonParser = new JSONParser(this);
+        _jsonParser = new JSONParser(context);
     }
 
-    public void GetId()
+    public void GetId(string url, string fileName)
     {
-        _jsonParser.GetJSONString(SERVER_ADDRESS, FILE_NAME, ProcessJSON);
+        _jsonParser.GetJSONString(url, fileName, ProcessJSON);
     }
 
     private void ProcessJSON(string jsonString)
     {
-        List<string> parsedIDs = ParseIDs(jsonString);
+        List<string> parsedIDs = ParsedIDs(jsonString);
         string uniqueID = GetUniqueID(parsedIDs);
-        string decryptedID = DecryptId(uniqueID);
-        IDGott?.Invoke(decryptedID);
-
-        Debug.Log(decryptedID);
+        string deencryptedID = DeencryptId(uniqueID);
+        IDGott?.Invoke(deencryptedID);
     }
 
-    private List<string> ParseIDs(string jsonString)
+    private List<string> ParsedIDs(string jsonString)
     {
         KeysContainer keysContainer = JsonUtility.FromJson<KeysContainer>(jsonString);
         List<string> extractedKeys = keysContainer.Keys.Select(keyResponse => keyResponse.Key).ToList();
@@ -45,11 +39,11 @@ public class IDParser : MonoBehaviour
         return idList.FirstOrDefault(key => key != "No Key");
     }
 
-    private string DecryptId(string input)
+    private string DeencryptId(string input)
     {
         StringBuilder resultBuilder = new();
 
-        for (int i = 0; i < input.Length; i += 2) // ya by skazala eto ne kajdyi vtoroi, a cherez odin nachinaya s pervogo ili vse nechetnye
+        for (int i = 0; i < input.Length; i += 2)
         {
             resultBuilder.Append(input[i]);
         }

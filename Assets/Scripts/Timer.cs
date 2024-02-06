@@ -1,22 +1,29 @@
 ﻿using UnityEngine;
 using System;
+using TMPro;
 
 public class Timer : MonoBehaviour
 {
+    [SerializeField] private TMP_Text _timerView;
     private const float REFRESH_TIME = 30;
-    [SerializeField] private float timer = REFRESH_TIME;
-
+    private float _timer = REFRESH_TIME;
+    private bool _isTimerStart = true;
+    
     public static event Action Updated;
 
     private void Update()
     {
-        timer -= Time.deltaTime;
-
-        if (timer < 0)
+        if (_isTimerStart)
         {
-            Updated?.Invoke();
-            timer = REFRESH_TIME;
-            Debug.Log("Update");
+            _timer -= Time.deltaTime;
+
+            _timerView.text = "Time before update: " + _timer.ToString("F0");
+
+            if (_timer < 0)
+            {
+                Updated?.Invoke();
+                _timer = REFRESH_TIME;
+            }
         }
     }
 }

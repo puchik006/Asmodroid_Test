@@ -4,7 +4,7 @@ using UnityEngine;
 public class TestPassesCounter
 {
     private JSONParser _jsonParser;
-    public static Action<string> TestPassesCounted;
+    public Action<string> TestPassesCounted;
 
     public TestPassesCounter(MonoBehaviour context)
     {

@@ -7,7 +7,7 @@ public class Timer : MonoBehaviour
     [SerializeField] private TMP_Text _timerView;
     private const float REFRESH_TIME = 30;
     private float _timer = REFRESH_TIME;
-    private bool _isTimerStart = true;
+    private bool _isTimerStart = false;
     
     public static event Action Updated;
 
@@ -16,7 +16,6 @@ public class Timer : MonoBehaviour
         if (_isTimerStart)
         {
             _timer -= Time.deltaTime;
-
             _timerView.text = "Time before update: " + _timer.ToString("F0");
 
             if (_timer < 0)
@@ -25,5 +24,10 @@ public class Timer : MonoBehaviour
                 _timer = REFRESH_TIME;
             }
         }
+    }
+
+    public void SetTimer(bool isStart)
+    {
+        _isTimerStart = isStart;
     }
 }

@@ -6,7 +6,7 @@ using UnityEngine;
 public class TestPassesList
 {
     private JSONParser _jsonParser;
-    public static Action<List<string>> TestPassesListGott;
+    public Action<List<string>> TestPassesListGott;
 
     public TestPassesList(MonoBehaviour context)
     {
@@ -25,7 +25,7 @@ public class TestPassesList
 
     List<string> ParsePhoneNumbers(string input)
     {
-        List<string> phoneNumbers = new List<string>();
+        HashSet<string> uniquePhoneNumbers = new HashSet<string>();
 
         string pattern = @"\+\d{1,2}\(\d{3}\)\d{7}";
 
@@ -33,9 +33,9 @@ public class TestPassesList
 
         foreach (Match match in matches)
         {
-            phoneNumbers.Add(match.Value);
+            uniquePhoneNumbers.Add(match.Value);
         }
 
-        return phoneNumbers;
+        return new List<string>(uniquePhoneNumbers);
     }
 }

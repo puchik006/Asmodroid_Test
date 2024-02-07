@@ -38,7 +38,7 @@ public class UserRegistrator
         string[] parts = numbers.Split('(', ')');
 
         _formFields["Country"] = "+" + parts[0];
-        _formFields["Operator"] = "(" + parts[1] + ")";
+        _formFields["Operator"] = parts[1];
         _formFields["Number"] = parts[2];
     }
 
